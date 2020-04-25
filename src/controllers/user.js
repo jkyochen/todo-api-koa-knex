@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
             }
             return await User.query(trx).insert({
                 username,
-                password,
+                password: await bcrypt.hash(password, 12),
                 role: "admin",
             });
         });
@@ -25,12 +26,9 @@ module.exports = {
         const { username, password } = ctx.request.body;
         const user = await User.query()
             .findOne({
-                username,
-                password,
-                role: "admin",
-            })
-            .select("id");
-        if (!user) {
+                username
+            });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             ctx.throw(401, { data: { message: "Unauthorized login user" } });
             return;
         }

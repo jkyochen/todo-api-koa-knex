@@ -45,7 +45,6 @@ describe("Routes: users", () => {
                 .send({ username: "", password: "" });
             expect(res.status).toEqual(400);
             expect(res.body.error.username[0].keyword).toEqual("minLength");
-            expect(res.body.error.password[0].keyword).toEqual("minLength");
         });
     });
 
