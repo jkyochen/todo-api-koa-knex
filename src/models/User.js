@@ -1,9 +1,10 @@
-const Model = require("./Model");
 const _ = require("lodash");
+const Model = require("./Model");
+const tableNames = require("../constants/tableNames");
 
 class User extends Model {
     static get tableName() {
-        return "user";
+        return tableNames.user;
     }
 
     static get relationMappings() {

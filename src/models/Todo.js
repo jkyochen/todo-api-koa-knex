@@ -1,8 +1,9 @@
 const Model = require("./Model");
+const tableNames = require("../constants/tableNames");
 
 class Todo extends Model {
     static get tableName() {
-        return "todo";
+        return tableNames.todo;
     }
 
     static get relationMappings() {
