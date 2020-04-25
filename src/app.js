@@ -10,7 +10,7 @@ const app = new Koa();
 
 app.keys = [process.env.SESSION_SECRET];
 
-require('./middlewares/auth');
+require('./services/auth');
 
 app.use(logger())
     .use(async (ctx, next) => {
