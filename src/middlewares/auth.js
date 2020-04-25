@@ -1,9 +1,7 @@
 const bcrypt = require("bcrypt");
 const passport = require("koa-passport");
 const LocalStrategy = require("passport-local").Strategy;
-
-const tableNames = require("../constants/tableNames");
-const knex = require("../db/config");
+const User = require("../models/User");
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -11,7 +9,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        done(null, await knex(tableNames.user).where({ id }).first());
+        done(null, await User.query().findOne({ id }));
     } catch (err) {
         done(err, null);
     }
@@ -20,9 +18,7 @@ passport.deserializeUser(async (id, done) => {
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
-            const user = await knex(tableNames.user)
-                .where({ username })
-                .first();
+            const user = await User.query().findOne({ username });
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 done(null, false);
                 return;
