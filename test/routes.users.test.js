@@ -8,15 +8,14 @@ const app = require("../src/app").callback();
 const knex = require("../src/db/config");
 
 describe("Routes: users", () => {
-    beforeAll(() => {
-        return knex.migrate
-            .rollback()
-            .then(() => knex.migrate.latest())
-            .then(() => knex.seed.run());
+    beforeAll(async () => {
+        await knex.migrate.rollback();
+        await knex.migrate.latest();
+        await knex.seed.run();
     });
 
-    afterAll(() => {
-        return knex.migrate.rollback();
+    afterAll(async () => {
+        await knex.migrate.rollback();
     });
 
     describe("POST /api/v1/users/register", () => {
