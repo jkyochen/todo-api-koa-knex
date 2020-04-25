@@ -5,7 +5,7 @@ module.exports = {
     Register: async (ctx) => {
         const { username, password } = ctx.request.body;
         const user = await User.transaction(async (trx) => {
-            if (await User.query(trx).findOne({username}).select("id")) {
+            if (await User.query(trx).findOne({ username }).select("id")) {
                 ctx.throw(409, { data: { message: "Conflict regsiter user" } });
                 return;
             }
@@ -24,10 +24,9 @@ module.exports = {
     },
     Login: async (ctx) => {
         const { username, password } = ctx.request.body;
-        const user = await User.query()
-            .findOne({
-                username
-            });
+        const user = await User.query().findOne({
+            username,
+        });
         if (!user || !(await bcrypt.compare(password, user.password))) {
             ctx.throw(401, { data: { message: "Unauthorized login user" } });
             return;
