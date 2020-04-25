@@ -41,12 +41,6 @@ module.exports = {
         })(ctx);
     },
     Logout: async (ctx) => {
-        if (!ctx.isAuthenticated()) {
-            ctx.throw(401, {
-                data: { message: "Unauthorized login user" },
-            });
-            return;
-        }
         ctx.logout();
         ctx.status = 200;
         ctx.body = {
